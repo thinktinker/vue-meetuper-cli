@@ -32,7 +32,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import CategoryItem from '@/components/CategoryItem.vue'
   import MeetupItem from '@/components/MeetupItem.vue'
   export default{
@@ -40,20 +39,17 @@
       CategoryItem,
       MeetupItem
     },
-    data(){
-      return{
-        meetups: [],
-        categories: []
+    computed:{
+      meetups(){
+        return this.$store.getters['meetups']
+      },
+      categories(){
+        return this.$store.getters['categories']
       }
     },
     created(){
-      axios.get('/api/v1/meetups').then(res=>{
-        // debugger
-        this.meetups = res.data
-      })
-      axios.get('/api/v1/categories').then(res=>{
-        this.categories = res.data
-      })
+      this.$store.dispatch('fetchMeetups')
+      this.$store.dispatch('fetchCategories')  
     }
   }
 </script>

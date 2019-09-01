@@ -23,4 +23,3 @@ const router = new vueRouter({
 })
 
 export default router
-// module.exports = router
