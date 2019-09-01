@@ -11,33 +11,49 @@ export default  new Vuex.Store({
         meetup: {}
     },
     getters:{
-        meetups(state){
-            return state.meetups
-        },
-        categories(state){
-            return state.categories
-        }
     },
     actions:{
-        fetchMeetups(context){
+        fetchMeetups({state, commit}){
+            commit('setItems', {resource: 'meetups', items:[]})
             axios.get('/api/v1/meetups').then(res=>{
                 const meetups = res.data
-                context.commit('setMeetups', meetups)   //invokes the mutation function setMeetups
-              })
+                commit('setItems', {resource: 'meetups', items:meetups})
+                return state.meetups
+            })
         },
-        fetchCategories(context){
+        fetchCategories({state, commit}){
             axios.get('/api/v1/categories').then(res=>{
                 const categories = res.data
-                context.commit('setCategories', categories)  //invokes the mmutation function setCategories
+                commit('setItems', {resource: 'categories', items:categories})
+                return state.categories
+            })
+        },
+        fetchMeetup({state, commit}, meetupId){
+            commit('setItem', {resource: 'meetup', items:{} })
+            axios.get(`/api/v1/meetups/${meetupId}`)
+            .then(res=>{
+                const meetup = res.data
+                commit('setItems', {resource: 'meetup', items:meetup})
+                return state.meetup
+            })
+        },
+        fetchThreads({state, commit}, meetupId){
+            commit('setItems', {resource: 'threads', items:[]})
+            axios.get(`/api/v1/threads?meetupId=${meetupId}`)
+            .then(res=>{
+                const threads = res.data
+                commit('setItems', {resource: 'threads', items: threads})
+                return state.threads
             })
         }
     },
     mutations:{
-        setMeetups(state, meetups){
-            state.meetups = meetups
+        //create a generic mutation function to handle all the actions
+        setItems(state, {resource, items}){
+            state[resource] = items
         },
-        setCategories(state, categories){
-            state.categories = categories
+        setItem(state, {resource, item}){
+            state[resource] = item
         }
     }
 })

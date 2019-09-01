@@ -41,10 +41,10 @@
     },
     computed:{
       meetups(){
-        return this.$store.getters['meetups']
+        return this.$store.state.meetups
       },
       categories(){
-        return this.$store.getters['categories']
+        return this.$store.state.categories
       }
     },
     created(){
