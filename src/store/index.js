@@ -28,12 +28,12 @@ export default  new Vuex.Store({
                 return state.categories
             })
         },
-        fetchMeetup({state, commit}, meetupId){
-            commit('setItem', {resource: 'meetup', items:{} })
+        fetchMeetupById({state, commit}, meetupId){
+            commit('setItem', {resource: 'meetup', item:{} })
             axios.get(`/api/v1/meetups/${meetupId}`)
             .then(res=>{
                 const meetup = res.data
-                commit('setItems', {resource: 'meetup', items:meetup})
+                commit('setItem', {resource: 'meetup', item:meetup})
                 return state.meetup
             })
         },
