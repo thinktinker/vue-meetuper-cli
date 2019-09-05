@@ -1,7 +1,7 @@
 <template>
   <div>
     <AppHero />
-    <div class="container" v-if="dataLoaded">
+    <div class="container" v-if="pageLoader_isDataLoaded">
       <section class="section">
       <div class="m-b-lg">
         <h1 class="title is-inline">Featured Meetups in "Location"</h1>
@@ -38,15 +38,11 @@
   import CategoryItem from '@/components/CategoryItem.vue'
   import MeetupItem from '@/components/MeetupItem.vue'
   import {mapActions , mapState} from 'vuex'
+  import pageLoader from '@/mixins/pageLoader.js'
   export default{
     components:{
       CategoryItem,
       MeetupItem
-    },
-    data(){
-      return {
-        dataLoaded: false
-      }
     },
     computed:{
       ...mapState({
@@ -54,20 +50,13 @@
         categories: state => state.categories.items
       })
     },
+    mixins: [pageLoader],
     created(){
-      try{
-        this.fetchMeetups().then((r1) => {
-          if(r1){
-            return this.fetchCategories()
-          }
-        }).then(r2 =>{
-          if(r2){
-            this.dataLoaded = true
-          }
-        })
-      }catch(e){
-        console.log("error")
-      }
+
+      Promise.all([this.fetchCategories(),this.fetchMeetups()]).then(result=>{
+        if(result)
+          this.pageLoader_resolveData()
+      })
     },
     methods:{
       ...mapActions('meetups',['fetchMeetups']),
