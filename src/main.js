@@ -6,6 +6,7 @@ import AppSpinner from './components/shared/AppSpinner.vue'
 import router from './router'
 import moment from 'moment'
 import store from './store'
+import vuelidate from 'vuelidate'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
@@ -13,6 +14,8 @@ Vue.config.devtools = true
 Vue.component('AppHero', AppHero)
 Vue.component('AppDropdown', AppDropdown)
 Vue.component('AppSpinner', AppSpinner)
+
+Vue.use(vuelidate)
 
 Vue.filter('capitalize', (value)=>{
   if(value && typeof value === 'string')
@@ -31,5 +34,6 @@ Vue.filter('formatDate', (value, formatVal = 'LL')=>{
 new Vue({
   router,
   store,
+  vuelidate,
   render: h => h(App),
 }).$mount('#app')
