@@ -21,12 +21,12 @@ const router = new vueRouter({
             component: PageMeetupDetail
         },
         {
-            path: '/PageLogin',
+            path: '/login',
             name: 'PageLogin',
             component: PageLogin
         },
         {
-            path: '/PageRegister',
+            path: '/register',
             name: 'PageRegister',
             component: PageRegister
         }

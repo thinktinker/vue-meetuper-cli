@@ -53,9 +53,13 @@
     mixins: [pageLoader],
     created(){
 
-      Promise.all([this.fetchCategories(),this.fetchMeetups()]).then(result=>{
+      Promise.all([this.fetchCategories(),this.fetchMeetups()]).
+      then(result=>{
         if(result)
           this.pageLoader_resolveData()
+      }).catch(err=>{
+        console.log(err)
+        this.pageLoader_resolveData()
       })
     },
     methods:{

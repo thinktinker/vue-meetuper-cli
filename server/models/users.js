@@ -45,13 +45,24 @@ userSchema.pre("save", function(next){
    });
 });
 
-//Every user have acces to this methods
-userSchema.methods.comparePassword = function(candidatePassword, callback){
-   bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
-      if(err) {return callback(err);}
+// //Every user have acces to this methods
+// userSchema.methods.comparePassword = function(candidatePassword, callback){
+//    bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
+//       if(err) {return callback(err);}
 
-      callback(null, isMatch);
-   });
+//       callback(null, isMatch);
+//    });
+// }
+
+//Every user have acces to this methods
+userSchema.methods.comparePassword = async function(candidatePassword){
+   
+   const isMatch = await bcrypt.compare(candidatePassword, this.password)
+
+   if(!isMatch)
+      throw new Error("Password is incorrect.")
+
+   return true
 }
 
 

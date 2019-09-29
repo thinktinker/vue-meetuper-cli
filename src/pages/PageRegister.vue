@@ -150,7 +150,7 @@
         },
         computed:{
           fromIsvalid(){
-            return this.$v.form.$isvalid
+            return this.$v.form.$invalid
           }
         },
         methods:{
@@ -158,6 +158,11 @@
               console.log(this.$v)
               this.$v.form.$touch()
               this.$store.dispatch('auth/registerUser', this.form)
+              .then(()=>{
+                this.$router.push('/login')
+              }).catch((err) => {
+                console.log(err)
+              })
           }
         }
     }

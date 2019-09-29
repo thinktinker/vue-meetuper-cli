@@ -29,7 +29,12 @@ const getMeetupById = function(req, res) {
   });
 }
 
+const getSecret = function(req, res){
+    res.send("This is a secret")
+}
+
 module.exports = {
   getMeetups,
-  getMeetupById
+  getMeetupById,
+  getSecret
 }
