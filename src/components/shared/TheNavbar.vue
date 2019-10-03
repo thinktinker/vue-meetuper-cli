@@ -45,7 +45,10 @@
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div v-if="user" class="navbar-item">
+          Welcome {{user.name}}
+        </div>
+        <div v-else class="navbar-item">
           <div class="buttons">
             <router-link :to="{name: 'PageRegister'}" class="button is-primary">
               <strong>Sign up</strong>
@@ -61,7 +64,13 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
+    computed:{
+          ...mapGetters({
+            'user': 'auth/authUser'
+          })
+    }
   }
 </script>
 

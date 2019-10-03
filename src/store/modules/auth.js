@@ -3,7 +3,15 @@ import axios from 'axios'
 export default{
     namespaced: true,
     state:{
-        user: {}
+        user: null
+    },
+    getters:{
+        authUser(state){
+            return state.user || null
+        },
+        isAuthenticated(state){
+            return !!state.user
+        }
     },
     actions:{
         registerUser({state, commit}, formData){
@@ -14,6 +22,16 @@ export default{
             .then((res) =>{
                 const user = res.data
                 commit('setAuthUser', user)
+            })
+        },
+        getAuthUser({state, commit}){
+            return axios.get('/api/v1/users/me')
+            .then(res=>{
+                const user = res.data
+                commit('setAuthUser', user)
+                return user
+            }).catch(e=>{
+                console.log("user not identified")
             })
         }
     },

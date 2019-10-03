@@ -13,28 +13,43 @@ const getUsers = function(req, res) {
   });
 }
 
+const getCurrentUser = function(req, res, next) {
+
+  const user = req.user
+
+  if(!user)
+    return res.status(422).send("Please login.")
+
+  return res.json(user)
+
+}
+
 const registerUsers = async function(req, res) {
 
-  const registrationKeys = Object.keys(req.body);
-  const required = ['username', 'name', 'email', 'password', 'passwordConfirmation'];
-  const verifyRequired = required.every((key)=>{
-    return registrationKeys.includes(key);
-  })
+  try{
+    const registrationKeys = Object.keys(req.body);
+    const required = ['username', 'name', 'email', 'password', 'passwordConfirmation'];
+    const verifyRequired = required.every((key)=>{
+      return registrationKeys.includes(key);
+    })
+    console.log(verifyRequired)
 
-  if(!verifyRequired){
-    return res.status(422).send({error: "Please fill in all required fields."});
+    if(!verifyRequired){
+      throw new Error("Please fill in all required fields.");
+    }
+
+    if(req.body.password !== req.body.passwordConfirmation)
+      throw new Error("Password must be consistent.");
+
+    const user = new User(req.body);
+
+    const result = await user.save();
+    
+    if(result)
+      res.status(200).json(result); 
+  }catch(e){
+    res.status(422).send({error: "Please fill in all required fields."});
   }
-
-  if(req.body.password !== req.body.passwordConfirmation)
-    return res.status(422).send({error: "Password must be consistent."});
-
-  const user = new User(req.body);
-
-  const result = await user.save();
-  
-  if(result)
-    return res.status(200).json(result); 
-
 }
 
 const loginUsers = (req, res, next)=>{
@@ -86,6 +101,7 @@ const logout = (req, res)=>{
 
 module.exports = {
   getUsers,
+  getCurrentUser,
   registerUsers,
   loginUsers,
   logout
