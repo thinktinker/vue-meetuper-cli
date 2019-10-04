@@ -85,7 +85,7 @@ const loginUsers = (req, res, next)=>{
       }
     }catch(e){
       const msg = e.message.split(":").pop().trim()
-      res.send({errors: msg})
+      res.status(422).send({errors: msg})
     }
 
   })(req, res, next)
