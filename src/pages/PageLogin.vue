@@ -83,7 +83,7 @@
         methods:{
             login()
             {
-                console.log(this.$v)
+                // console.log(this.$v)
                 this.$v.form.$touch()
                 this.$store.dispatch('auth/loginUser', this.form)
                 .then(()=>this.$router.push('/'))

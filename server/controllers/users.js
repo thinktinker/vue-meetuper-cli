@@ -18,7 +18,7 @@ const getCurrentUser = function(req, res, next) {
   const user = req.user
 
   if(!user)
-    return res.status(422).send("Please login.")
+    return res.status(422).send("Not Authenticated.")
 
   return res.json(user)
 

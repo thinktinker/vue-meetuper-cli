@@ -46,7 +46,10 @@
 
       <div class="navbar-end">
         <div v-if="user" class="navbar-item">
-          Welcome {{user.name}}
+          Welcome {{user.name}} &nbsp; &nbsp;
+          <div class="buttons">
+            <a @click.prevent = "logout" class="button is-primary">logout</a>
+          </div>
         </div>
         <div v-else class="navbar-item">
           <div class="buttons">
@@ -70,6 +73,11 @@
           ...mapGetters({
             'user': 'auth/authUser'
           })
+    },
+    methods:{
+      logout(){
+        this.$store.dispatch('auth/logout')
+      }
     }
   }
 </script>
